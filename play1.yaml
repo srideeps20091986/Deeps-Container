@@ -1,0 +1,12 @@
+- name: play book to create a directory and file in it
+  hosts: Docker2
+  tasks:
+   - name: creating the directory /onmobile-test
+     file:
+      path: /onmobile-test
+      state: directory 
+
+   - name: creating the file welcome
+     copy:
+      content: "Welcome to Ansible Automation \n"
+      dest: /onmobile-test/welcome

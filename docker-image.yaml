@@ -1,0 +1,25 @@
+---
+- name : creating the image file
+  hosts : all
+  remote_user : docker
+  become : true
+  tasks :
+  - name : create the director
+    file :
+      path :  /home/docker/ansible-docker
+      state : directory
+
+  - name : copying the files
+    copy:
+      src: /home/docker/playbooks/dockers/{{ item }}
+      dest: /home/docker/ansible-docker
+    with_items:
+      - Dockerfile
+      - index.html
+
+  - name : creating the new image from Docker file
+    shell : cd /home/docker/ansible-docker; docker build -t ansible-docker:v1 .
+    register : d1
+
+  - debug :
+      var : d1

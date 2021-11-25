@@ -1,0 +1,20 @@
+---
+- name : creating container from the image
+  hosts : all
+  remote_user : docker
+  become : true
+  tasks :
+  - name : create a container rps1-docker in Docker1 host
+    shell : docker run --name rps1-docker -d -p 9092:80 ansible-docker:v1
+    when : inventory_hostname in ['Docker1']
+
+  - name : create a container rps2-docker
+    shell : docker run --name rps2-docker -d -p 9093:80 ansible-docker:v1
+    when : inventory_hostname in ['Docker2']
+
+  - name : list the containers
+    shell : docker ps
+    register : d2
+
+  - debug :
+      var : d2

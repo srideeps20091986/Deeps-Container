@@ -1,0 +1,27 @@
+- name : Deploying the Apache web server
+  hosts : Docker1
+  vars : 
+    web : httpd
+  tasks :
+  - name : installing the httpd service
+    yum:
+      name: "{{web}}"
+      state: latest
+
+  - name : start and enable the httpd service
+    service:
+      name: "{{web}}"
+      state: started
+      enabled : yes
+
+  - name : create the index.html under /var/www/html
+    copy :
+      content : "Welcome to Onmobile Ansible Server !!!! \n"
+      dest : /var/www/html/index.html
+
+  - name : add the http service under firewalld
+    firewalld:
+      service: http
+      permanent: yes
+      state: enabled
+      immediate : yes
